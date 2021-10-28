@@ -1,0 +1,34 @@
+version: '3.3'
+services:
+  discovery:
+    image: 'books-service'
+    volumes:
+      - "/c/Users/ncorocea/IdeaProjects/books environment/discovery-service/target:/code"
+    ports:
+      - "8761:8761"
+  front:
+    image: 'books-service'
+    volumes:
+      - "/c/Users/ncorocea/IdeaProjects/books environment/books-front-service/target:/code"
+    ports:
+      - "8080:8080"
+# because discovery should be up before the others
+    depends_on:
+      - discovery
+  shop:
+    image: 'books-service'
+    volumes:
+      - "/c/Users/ncorocea/IdeaProjects/books environment/books-shop-service/target:/code"
+    ports:
+      - "8081:8081"
+    depends_on:
+      - discovery
+  reviews:
+    image: 'books-service'
+    volumes:
+      - "/c/Users/ncorocea/IdeaProjects/books environment/books-reviews-service/target:/code"
+    ports:
+      - "8082:8082"
+    depends_on:
+      - discovery
+
