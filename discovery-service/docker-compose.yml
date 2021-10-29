@@ -23,6 +23,14 @@ services:
       - "8081:8081"
     depends_on:
       - discovery
+  shop2:
+    image: 'books-service'
+    volumes:
+      - "/c/Users/ncorocea/IdeaProjects/books environment/books-shop-service/target:/code"
+    ports:
+      - "8084:8084"
+    depends_on:
+      - discovery
   reviews:
     image: 'books-service'
     volumes:
