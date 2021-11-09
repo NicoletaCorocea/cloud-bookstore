@@ -1,7 +1,7 @@
 package com.env.booksfrontservice.controller;
 
-import com.env.booksfrontservice.client.BookStoreClient;
-import com.env.booksfrontservice.client.ReviewServiceClient;
+import com.env.booksfrontservice.client.BookShopRestClient;
+import com.env.booksfrontservice.client.ReviewServiceRestClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,19 +14,31 @@ public class FrontController {
     private static final Logger log = LogManager.getLogger(FrontController.class);
 
     @Autowired
-    private BookStoreClient bookStoreClient;
+    private BookShopRestClient bookShopRestClient;
 
     @Autowired
-    private ReviewServiceClient reviewServiceClient;
+    private ReviewServiceRestClient reviewServiceRestClient;
 
     @GetMapping("/books")
     public String getAllBooksWithReviews() {
-        String result = "bla bla";
+        String result = "";
+
         try {
-            result = bookStoreClient.shop() + " - " + reviewServiceClient.getReview("les-mis");
+            result = bookShopRestClient.shop();
         } catch (Exception ex) {
-           log.error(ex);
+            result += " shop fault";
+            log.error(ex);
         }
+
+        result += " ----- ";
+
+        try {
+            result += " " + reviewServiceRestClient.getReviews("Les Mis");
+        } catch (Exception ex) {
+            result += " reviews fault";
+            log.error(ex);
+        }
+
         return result;
     }
 }
